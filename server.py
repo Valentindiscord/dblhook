@@ -1,34 +1,29 @@
 import datetime
-import pymongo
-import flask
-from flask import Flask, request, jsonify
+import motor.motor_asyncio
+from quart import Quart, request, abort, jsonify
 
-app = Flask(__name__)
-mongo = pymongo.MongoClient("mongodb://pokebot:pokemon@127.0.0.1:27017/?authSource=admin")
-db = mongo["pokecord"]
-vote = db["User Upvote"]
+app = Quart(__name__)
+db = motor.motor_asyncio.AsyncIOMotorClient("mongodb://pokebot:pokemon@51.79.156.110:27017/?authSource=admin")
+data = db["pokecord"]
+votes = data["User Upvotes"]
 
-@app.route("/")
-def home():
-    return "DBL Webhook server!"
+@app.route("/", methods=["POST", "GET"])
+async def index():
+    return jsonify(dict(request.headers))
 
 @app.route("/webhook", methods=["POST"])
-def whook():
+async def webserver():
     if request.headers.get("Authorization") == "pokemon":
         user = request.json.get("user")
         bot = request.json.get("bot")
-        reType = request.json.get("type")
-        weekend = request.json.get("isWeekend")
-        res = vote.find_one({"UserID": user})
-        if res is None:
-            vote.insert_one({"UserID": user, "Last Voted At": datetime.datetime.utcnow(), "Streaks": 1})
-            return '', 200
+        checkVoted = await votes.find_one({"UserID": user})
+        if checkVoted is None:
+            await votes.insert_one({"UserID": user, "Streaks": 1, "Total Votes": 1, "Current Votes Count": 1, "Last Voted At": datetime.datetime.utcnow()})
+            return "Sucess", 200
         else:
-            total = res["Streaks"] + 1
-            vote.update_one({"UserID": user}, {"$set": {"Last Voted At": datetime.datetime.utcnow(), "Streaks": total}})
-            return '', 200
+            await votes.update_one({"UserID": user}, {"$set": {"Streaks": checkVoted["Streaks"] + 1, "Total Votes": checkVoted["Total Votes"] + 1, "Current Votes Count": checkVoted["Current Votes Count"] + 1, "Last Voted At": datetime.datetime.utcnow()}})
+            return "Success", 200
     else:
-        return jsonify({"status": "404", "message": "Not authorized"}, 404)
-    
-if __name__ == "__main__":
-    app.run(host='0.0.0.0')    
+        abort(400)
+
+app.run()

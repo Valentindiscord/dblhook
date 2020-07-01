@@ -19,7 +19,9 @@ def webserver():
         checkVoted = votes.find_one({"UserID": user})
         if checkVoted is not None:
             votes.update_one({"UserID": user}, {"$set": {"Streaks": checkVoted["Streaks"] + 1, "Total Votes": checkVoted["Total Votes"] + 1, "Current Votes Count": checkVoted["Current Votes Count"] + 1, "Last Voted At": datetime.datetime.utcnow()}})
-            return "Success", 200
+            return '', 200
+        else:
+            return '', 500
     else:
         abort(400)
 

@@ -3,7 +3,7 @@ import pymongo
 from flask import Flask, request, abort, jsonify
 
 app = Flask(__name__)
-db = pymongo.MongoClient("mongodb://pokebot:pokemon@51.79.156.110:27017/?authSource=admin")
+db = pymongo.MongoClient("mongodb://pokebot:pokemon@144.172.71.84:27017/?authSource=admin")
 data = db["pokecord"]
 votes = data["User Upvotes"]
 

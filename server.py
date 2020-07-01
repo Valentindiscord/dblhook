@@ -22,7 +22,7 @@ def webserver():
         if check is None:
             voting_time = datetime.datetime.utcnow()
             voting_time -= datetime.timedelta(hours = 13)
-            votes.insert_one({"UserID" : user, "Streak" : 0, "Last Voted At" : voting_time, 'Total Votes' : 0, "Current Votes Count" : 0})
+            votes.insert_one({"UserID" : user, "Streak" : 1, "Last Voted At" : voting_time, 'Total Votes' : 1, "Current Votes Count" : 1})
             return '', 200
         else:
             voting_time = datetime.datetime.utcnow()

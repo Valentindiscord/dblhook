@@ -3,7 +3,7 @@ import datetime
 from flask import Flask, request, abort, jsonify
 
 app = Flask(__name__)
-#db = pymongo.MongoClient("mongodb://pokebot:pokemon@51.79.156.110:27017/?authSource=admin")
+#db = pymongo.MongoClient("")
 #data = db["pokecord"]
 #votes = data["User Upvotes"]
 

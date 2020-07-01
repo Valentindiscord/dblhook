@@ -21,4 +21,4 @@ def webserver():
     else:
         abort(400)
 
-app.run()
+app.run(threaded=True, port=5000)

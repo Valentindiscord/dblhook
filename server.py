@@ -5,7 +5,7 @@ from flask import Flask, request, abort, jsonify
 app = Flask(__name__)
 db = pymongo.MongoClient("mongodb://pokebot:pokemon@144.172.71.84:27017/?authSource=admin")
 data = db["pokecord"]
-votes = data["User Upvotes"]
+votes = data["Upvotes"]
 
 @app.route("/", methods=["POST", "GET"])
 def index():

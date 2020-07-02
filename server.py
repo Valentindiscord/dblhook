@@ -27,7 +27,7 @@ def webserver():
         else:
             voting_time = datetime.datetime.utcnow()
             voting_time -= datetime.timedelta(hours = 13)
-            streaks = check["Streaks"] + 1
+            streaks = check["Streak"] + 1
             tv = check["Total Votes"] + 1
             cv = check["Current Votes Count"] + 1
             votes.update_one({"UserID": user}, {"$set": {"Streaks": streaks, "Total Votes": tv, "Current Votes Count": cv}})

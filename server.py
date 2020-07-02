@@ -30,7 +30,7 @@ def webserver():
             streaks = check["Streak"] + 1
             tv = check["Total Votes"] + 1
             cv = check["Current Votes Count"] + 1
-            votes.update_one({"UserID": user}, {"$set": {"Streaks": streaks, "Total Votes": tv, "Current Votes Count": cv}})
+            votes.update_one({"UserID": user}, {"$set": {"Streak": streaks, "Total Votes": tv, "Current Votes Count": cv}})
             return '', 200
     else:
         abort(400)
